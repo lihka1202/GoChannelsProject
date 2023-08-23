@@ -19,13 +19,16 @@ func main() {
 	for _, link := range holders {
 		go checkLink(link, c)
 	}
+	fmt.Println(<-c)
 }
 
 func checkLink(link string, c chan string) {
 	_, err := http.Get(link)
 	if err != nil {
 		fmt.Println("UhOh, website is down: ", link)
+		c <- "Likely to be down"
 	} else {
 		fmt.Println("No issues!")
+		c <- "functional website"
 	}
 }
