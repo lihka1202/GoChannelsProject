@@ -20,9 +20,15 @@ func main() {
 		go checkLink(link, c)
 	}
 
-	// For loop to ensure that most of the functions are being called
-	for {
-		go checkLink(<-c, c) //pass the value from the channel
+	// // For loop to ensure that most of the functions are being called
+	// for {
+	// 	go checkLink(<-c, c) //pass the value from the channel
+	// }
+
+	//The following for loop is equivalent to the one above
+
+	for l := range c {
+		go checkLink(l, c)
 	}
 }
 
