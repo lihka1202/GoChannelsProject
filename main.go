@@ -19,16 +19,20 @@ func main() {
 	for _, link := range holders {
 		go checkLink(link, c)
 	}
-	fmt.Println(<-c)
+
+	// For loop to ensure that most of the functions are being called
+	for {
+		go checkLink(<-c, c) //pass the value from the channel
+	}
 }
 
 func checkLink(link string, c chan string) {
 	_, err := http.Get(link)
 	if err != nil {
 		fmt.Println("UhOh, website is down: ", link)
-		c <- "Likely to be down"
+		c <- link
 	} else {
 		fmt.Println("No issues!")
-		c <- "functional website"
+		c <- link
 	}
 }
